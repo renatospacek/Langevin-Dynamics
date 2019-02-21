@@ -30,15 +30,6 @@ function main()
     histogram(X.sp)
 end
 
-
-function vscale(p::Array{Float64})
-    tfac = 3*nPart/β
-    fac = sqrt(tfac/sum(sum(p.*p)))
-    p *= fac
-    
-    return p
-end
-
 @time main()
 
 
