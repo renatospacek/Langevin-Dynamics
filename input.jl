@@ -9,7 +9,7 @@ using LaTeXStrings
 # ==============================================================================
 #                           Simulation parameters
 # ==============================================================================
-const t 	    = 1.0        # Total simulation time                          
+const t 	    = 1.0         # Total simulation time                          
 const N 	    = 10^4        # Number of timesteps
 const dt            = t/N         # Timestep                                 
 const dim	    = 3           # Dimensionality of the system                                  
