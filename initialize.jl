@@ -6,10 +6,10 @@ include("input.jl")
 #                  Generate initial positions and velocities
 # ==============================================================================
 function initialize_box()                                          
-	dx = L/ndim                                                               
+    dx = L/ndim                                                               
     shift = L/2*ones(3)
                                                              
-	q::Array{Float64} = zeros(dim, nPart)
+    q::Array{Float64} = zeros(dim, nPart)
     f::Array{Float64} = zeros(dim, nPart)
     p = _initialize_vel()
     pe = 0.0
@@ -17,7 +17,7 @@ function initialize_box()
     sp = [0.0]
     temp = 1.0
     
-	X = particle(q, p, f, sp, pe, ke, temp)
+    X = particle(q, p, f, sp, pe, ke, temp)
     X = kinetic(X)
     
     l = 1
@@ -39,7 +39,7 @@ function _initialize_vel()
         p[i,1:nPart] -= ones(nPart)*sumv[i]/nPart
     end
    
-    # scale velocities according to temperature
+    # Scale velocities according to temperature
     # 1/2 Σ v^2 = 3/2 nPart/β
     tfac = 3*nPart/β
     fac = sqrt(tfac/sum(p.*p))
