@@ -16,6 +16,6 @@ Features to be implemented/known limitations include:
 * Efficiency - the current version is far from optimal.
 
 # Usage
-All simulation parameters are defined in 'input.jl'. To run, simply execute 'main.jl'.
+All simulation parameters are defined in `input.jl`. To run, simply execute `main.jl`.
 
 [Julia]: http://julialang.org
