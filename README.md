@@ -1,4 +1,4 @@
-# Equilibrium-LD
+# Langevin-Dynamics
 
 A numerical framework written in [Julia] that implements Langevin dynamics, used to thermodynamically sample a system of interacting particles consistent with the canonical ensemble. Implemented features include:
 
@@ -17,5 +17,12 @@ Features to be implemented/known limitations include:
 
 # Usage
 All simulation parameters are defined in `input.jl`. To run, simply execute `main.jl`.
+
+# Notes
+This code was written as a test code, as this was my first experience with Julia.
+
+I am currently working on a larger project, which implements nonequilibrium Langevin dynamics for a series of background flows, for which this code serves as a basis/prototype. 
+
+All feedback is greatly welcome.
 
 [Julia]: http://julialang.org
