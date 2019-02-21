@@ -16,7 +16,14 @@ Features to be implemented/known limitations include:
 * Efficiency - the current version is far from optimal.
 
 # Usage
-All simulation parameters are defined in `input.jl`. To run, simply execute `main.jl`.
+All simulation parameters are defined as constants in `input.jl`. To run the code, simply execute `main.jl`. A brief description of the other scrips is below.
+
+* `cell_lists.jl`: Initializes and unwraps neighbor lists to compute the force due to pairwise interactions.
+* `hamiltonian.jl`: Computes kinetic/potential energy and the force.
+* `initialize.jl`: Generates initial lattice and initial velocities.
+* `integrator.jl`: Euler-Maruyama integrator.
+* `PBC.jl`: Periodic boundary conditions.
+* `histogram.jl`: Normalizes the Gibbs distribution and plots velocity histogram.
 
 # Notes
 This code was written as a test code, as this was my first experience with Julia.
