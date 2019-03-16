@@ -1,6 +1,6 @@
 #!/usr/local/bin/julia
 
-using InteractiveUtils
+using DelimitedFiles
 
 include("input.jl")
 include("initialize.jl")
@@ -12,31 +12,25 @@ include("histogram.jl")
 # ==============================================================================
 function main()
     X = initialize_box()
-    X = compute_force(X)
-    X = kinetic(X)
+    Z = clist()
     
-    dW = sqrt(dt)*randn(dim, nPart*N)
+    compute_force!(X, Z)
+    kinetic!(X)
+    
     Nsteps = trunc(Int, N/R)
-
+    h = R*dt
+    
     for i = 1:Nsteps
-        X = EM(R, dW, X, i)
-        X = kinetic(X)
+        EM!(h, X, i, Z)
+        kinetic!(X)
         
         if mod(i, outFreq) == 0
-            println("Step $i | Max. F = $(maximum(X.f)) | Max. p = $(maximum(X.p)) | PE = $(X.pe) | KE = $(X.ke) | T = $(X.temp) | Tot. E $(X.ke + X.pe)")
+            println("Step $i | Max. F = $(maximum(X.f)) | Max. p = $(maximum(X.p)) | PE = $(X.pe) | KE = $(X.ke) | T = $(X.temp)")
         end
     end
     
     histogram(X.sp)
 end
 
+# ==============================================================================
 @time main()
-
-
-
-
-
-
-
-
-
