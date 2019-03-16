@@ -6,46 +6,38 @@ include("input.jl")
 #                  Generate initial positions and velocities
 # ==============================================================================
 function initialize_box()                                          
-    dx = L/ndim                                                               
-    shift = L/2*ones(3)
-                                                             
-    q::Array{Float64} = zeros(dim, nPart)
-    f::Array{Float64} = zeros(dim, nPart)
-    p = _initialize_vel()
-    pe = 0.0
-    ke = 0.0
-    sp = [0.0]
-    temp = 1.0
-    
-    X = particle(q, p, f, sp, pe, ke, temp)
-    X = kinetic(X)
-    
-    l = 1
+	dx = L/ndim                                                               
+	X = particle(nPart, β)
+	_initialize_vel!(X)
+	kinetic!(X)
+
+	l = 1
 	for qx in 0:ndim-1, qy in 0:ndim-1, qz in 0:ndim-1                                
-		X.q[:,l] = dx*[qx, qy, qz] - shift
+		X.q[1,l] = dx*qx - L2
+		X.q[2,l] = dx*qy - L2
+		X.q[3,l] = dx*qz - L2
 		l += 1
 	end
-	
+
 	return X
 end
 
-function _initialize_vel()
-    p = randn(dim, nPart)                                                       
-	p = 2*p - ones(size(p))
-	sumv = zeros(dim)
+# ==============================================================================
+function _initialize_vel!(X::particle)
+	X.p = randn(dim, nPart)                                                       
+	X.p .= 2*X.p .- ones(size(X.p))
+	sumv = Array{Float64,1}(undef,3)
 	
 	for i in 1:3                                                                
-        sumv[i] = sum(p[i,1:nPart])
-        p[i,1:nPart] -= ones(nPart)*sumv[i]/nPart
+        sumv[i] = sum(X.p[i,1:nPart])
+        X.p[i,1:nPart] -= ones(nPart).*sumv[i]./nPart
     end
    
     # Scale velocities according to temperature
     # 1/2 Σ v^2 = 3/2 nPart/β
-    tfac = 3*nPart/β
-    fac = sqrt(tfac/sum(p.*p))
-    p *= fac
-    
-    return p
+    tfact = 3*nPart/β
+    fac = sqrt(tfact/sum(X.p.*X.p))
+    X.p *= fac
 end 
 
 
