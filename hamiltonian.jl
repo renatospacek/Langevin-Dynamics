@@ -3,37 +3,47 @@
 include("input.jl")
 
 # ==============================================================================
-#		            Lennard-Jones Potential and Force
+#		   Lennard-Jones Potential and Force
 # ==============================================================================
-function LJ(r::Array{Float64})
-    rr = norm(r)
-    
-    if rr < rc
-        r2 = (σ/rr)^2
-    
-        ff = 48*ε*r2^4*(r2^3 - 1/2)
-        pe = 4*ε*r2^3*(r2^3 - 1)
+function fLJ(rr::Float64)::Float64
+    if rr > rc
+        return 0.0
     else
-        ff = 0.0
-        pe = 0.0
-    end
+        r1 = σ/rr
+        r2 = r1^2
     
-	return ff, pe
+        return 48*ε*r2^3*(r2^3 - 1/2)*r1
+    end
+end
+
+# ==============================================================================
+function peLJ(rr::Float64)::Float64
+    if rr > rc
+        return 0.0
+    else
+        r1 = σ/rr
+        r2 = r1^2
+    
+        return 4*ε*r2^3*(r2^3 - 1) + 1
+    end
 end
 
 # ==============================================================================
 #                       Kinetic energy computation
 # ==============================================================================
-function kinetic(X::particle)
+function kinetic!(X::particle{Float64})
     p = sum(X.p.*X.p, dims=1)
     p = reshape(p, (length(p)))
     
     X.ke = sum(p/2)
-    X.temp = X.ke*2/3/nPart
+    X.temp = X.ke*tfac
     append!(X.sp, sqrt.(p))
-    
-    return X
 end
+
+
+
+
+
 
 
 
