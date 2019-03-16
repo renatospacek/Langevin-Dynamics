@@ -3,24 +3,38 @@
 include("input.jl")
 
 # ==============================================================================
-function PBC(q::Array{Float64,2})
-    for i in 1:nPart
-        for j in 1:dim
-            q[j,i] = mod(q[j,i]+L/2, L) - L/2   
-        end
+function PBC!(q::Array{Float64,2})
+    for j in 1:dim, i in 1:nPart
+            q[j,i] = remap(q[j,i]+L2) - L2
     end
-    
-    return q
 end
 
 # ==============================================================================
-function PBC(q::Array{Float64,1})
+function PBC(Z::clist)
+    
     for j in 1:dim
-        q[j] = mod(q[j]+L/2, L) - L/2   
+        Z.r[j] = remap(Z.r[j]+L2) - L2   
     end
     
-    return q
+    dist = sqrt(Z.r[1]^2 + Z.r[2]^2 + Z.r[3]^2)
+	lmul!(1/dist, Z.r)
+	
+    return dist
 end
+
+# ==============================================================================
+function remap(x::Float64)::Float64
+
+    while x >= L; x -= L; end
+    while x < 0; x += L; end
+    
+    return x
+end
+
+
+
+
+
 
 
 
