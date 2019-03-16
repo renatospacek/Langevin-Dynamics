@@ -1,9 +1,9 @@
 #!/usr/local/bin/julia
 
-import PyPlot
-
 include("input.jl")
 include("integrator.jl")
+
+import PyPlot
 
 # ==============================================================================
 #                         Histogram plot
@@ -16,23 +16,22 @@ function histogram(p::Array{Float64})
     x = range(0, stop=6, length=1000)
     y = 1/Z*fxn(x)
     
-	PyPlot.plt[:hist](p, bins=100, 
-	                     range=(0,8),
-	                     density=1, 
-	                     ec="black",
-	                     label="Simulation data")
+    PyPlot.plt[:hist](p, bins=100, 
+			     range=(0,8),
+			     density=1, 
+			     ec="black",
+			     label="Simulation data")
     
     PyPlot.plot(x,y, color="red", 
 	                 linewidth=2.0, 
 	                 linestyle="-",
-	                 label=L"Z^{-1}\exp(-βv^2/2)")
+	                 label="Gibbs dist.")
 	
-    PyPlot.xlabel(L"||v||")
+    PyPlot.xlabel("||v||")
     PyPlot.ylabel("PDF")
     PyPlot.title("Velocity PDF")
     PyPlot.legend()
-    
-	PyPlot.show()
+    PyPlot.show()
 end
 
 # ==============================================================================
